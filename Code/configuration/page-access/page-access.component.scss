@@ -1,0 +1,74 @@
+table,
+th,
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+table {
+    width: 100%;
+}
+
+th,
+td {
+    text-align: center;
+    vertical-align: middle;
+}
+.accordion-item{
+    margin-bottom: 10px;
+    border: 1px dashed var(--primary);
+    border-radius: 20px;
+}
+.accordion-item .accordion-button-heading{
+    border-radius: 20px;
+}
+.accordion-button:not(.collapsed) {
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    box-shadow: none;
+    color: var(--primary);
+    background-color: var(--blue-light);
+    font-weight: 600;
+}
+.module-list-table tr td input {
+    margin-top: 5px;
+}
+.accordion-button:focus {
+    box-shadow: none; 
+}
+
+.required-field {
+    color: red;
+}
+.role-module{
+    border-right: 1px solid #ced4da;
+}
+.checkbox label::before {
+    -o-transition: 0.3s ease-in-out;
+    -webkit-transition: 0.3s ease-in-out;
+    background-color: #ffffff;
+    border-radius: 2px;
+    border: 1px solid #cccccc;
+    content: "";
+    display: inline-block;
+    height: 17px;
+    left: 0;
+    margin-left: 9px;
+    position: absolute;
+    transition: 0.3s ease-in-out;
+    width: 17px;
+    outline: none !important;
+}
+.checkbox.checkbox-info label{
+    margin-left: 10px;
+}
+.search-roles-input{
+    margin-bottom: 10px;
+}
+
+.page-tab{
+    padding: 7.5px 0.85rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    background: #f9fafb;
+}

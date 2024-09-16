@@ -1,0 +1,122 @@
+<app-page-container [heading]="title" icon="pi pi-cog">
+  <ng-template #pageBody>
+    <form [formGroup]="form" (submit)="onSubmit(form)">
+      <div class="row">
+        <div class="col-md-3">
+          <custom-input-select [label]="'ConfigType'" [required]="true" formControlName="ConfigTypeId"
+            [placeholder]="'ConfigType'" [options]="listConfigType">
+          </custom-input-select>
+        </div>
+        <div class="col-md-3">
+          <custom-input-text [label]="'ConfigCode'" [required]="true" formControlName="ShortCode"
+            [placeholder]="'ConfigCode'">
+          </custom-input-text>
+        </div>
+        <div class="col-md-6">
+          <custom-input-text [label]="'ConfigDescription'" [required]="true" formControlName="Description"
+            [placeholder]="'ConfigDescription'">
+          </custom-input-text>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          <custom-input-text [label]="'ConfigValue'" [required]="true" formControlName="ConfigValue"
+            [placeholder]="'ConfigValue'">
+          </custom-input-text>
+        </div>
+        <div class="col-md-3">
+          <custom-input-text [label]="'ConfigValueUnit'" formControlName="ConfigValueUnit"
+            [placeholder]="'ConfigValueUnit'">
+          </custom-input-text>
+        </div>
+        <div class="col-md-3">
+          <custom-input-text [label]="'ControlUse'" formControlName="ControlUse" placeholder="ControlUse">
+          </custom-input-text>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <custom-input-switch [label]="'IsCommon'" formControlName="IsCommon">
+            </custom-input-switch>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <custom-input-switch [label]="'IsActive'" formControlName="IsActive">
+            </custom-input-switch>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <p-button type="submit" [raised]="true" [disabled]="disabled"
+              [label]="form.controls['Id'].value > 0 ? ('Update' | translate): ('Submit'| translate)" styleClass="me-2">
+            </p-button>
+            <p-button [raised]="true" severity="warning" [label]="'Clear'| translate" (click)="clearForm()">
+            </p-button>
+          </div>
+        </div>
+        <div class="col-md-6 text-end">
+          <p-button [raised]="true" severity="success" icon="pi pi-file-excel" [pTooltip]="'ExportToExcel' | translate" tooltipPosition="top" styleClass="me-2" [label]="'ExportToExcel'| translate" (click)="fileExport('excel')" aria-hidden="true">
+          </p-button>
+          <p-button [raised]="true" severity="danger" icon="pi pi-file-pdf" [pTooltip]="'ExportToPDF' | translate" tooltipPosition="top" [label]="'ExportToPDF'| translate" (click)="fileExport('pdf')" aria-hidden="true">
+          </p-button>
+        </div>
+      </div>
+    </form>
+
+
+    <p-accordion [multiple]="true">
+      @for (item of listConfigType; track $index) {
+      <p-accordionTab [header]="item.Description">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="table table-responsive">
+              <table class="table table-bordered table-responsive" width="100%" style="table-layout:fixed; width:100%; word-break:break-all">
+                <tr>
+                  <th class="text-center configcode">{{'ConfigCode' | translate}}</th>
+                  <th class="text-center config-description">{{'ConfigDescription' | translate}}</th>
+                  <th class="text-center config-value">{{'ConfigValue' | translate}}</th>
+                  <th class="text-center config-value-unit">{{'ConfigValueUnit' | translate}}</th>
+                  <th class="text-center config-isActive">{{'IsActive' | translate}}</th>
+                  <th class="text-center config-action p-0">{{'Action' | translate}}</th>
+                </tr>
+                @for (item of filterAppConfigTypwWise(lstApplicationConfig,item.Id); track $index) {
+                <tr>
+                  <td class="text-center configcode">{{item.ShortCode}}</td>
+                  <td class="text-center config-description">{{item.Description}}</td>
+                  <td class="text-center config-value">{{item.ConfigValue}}</td>
+                  <td class="text-center config-value-unit">{{item.ConfigValueUnit}}</td>
+                  <td class="text-center isActive">
+                    <div style="pointer-events: none; cursor: not-allowed;">
+                      <custom-input-switch [(ngModel)]="item.IsActive">
+                      </custom-input-switch>
+                      <!-- <div class="custom-switch switch-success">
+                        <input type="checkbox" class="custom-control-input" [(ngModel)]="item.IsActive" role="switch">
+                        <label class="custom-control-label">&nbsp;</label>
+                      </div> -->
+                    </div>
+                  </td>
+                  <td class="text-center config-action">
+                    <div class="p-0">
+                      <p-button [raised]="true" size="small" icon="pi pi-pencil" [pTooltip]="'Edit' | translate" tooltipPosition="top" styleClass="me-2" (click)="editApplicationConfig(item)">
+                      </p-button>
+                      <p-button [raised]="true" size="small" severity="danger" icon="pi pi-trash" [pTooltip]="'Delete' | translate" tooltipPosition="top" styleClass="me-2" (click)="deleteApplicationConfig(item.Id)">
+                      </p-button>
+                    </div>
+                  </td>
+                </tr>
+              }
+              </table>
+            </div>
+          </div>
+        </div>
+      </p-accordionTab>
+      }
+    </p-accordion>
+
+
+  </ng-template>
+</app-page-container>

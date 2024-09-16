@@ -1,0 +1,170 @@
+<app-page-container>
+  <ng-template #pageBody>
+    <p-accordion [multiple]="true" [activeIndex]="[0, 1, 2, 3]">
+      @for (e of emailMatrixList; track $index) {
+        <p-accordionTab [header]="e.DisplayTabGroupName | translate">
+          <div class="row">
+            <div class="col-md-12 form-group">
+              <div class="table table-responsive">
+                <table class="table table-bordered table-striped m-0">
+                  <thead>
+                    <tr>
+                      <th class="colDesc">{{ "Description" | translate }}</th>
+                      <th class="colGroupType">{{ "SendTo" | translate }}</th>
+                      <th class="text-center colIsrequestor">
+                        {{ "IsSendToRequestor" | translate }}
+                      </th>
+                      <th class="text-center colAdditional">
+                        {{ "IsSendToAdditional" | translate }}
+                      </th>
+                      <th class="text-center colGroupTypeCC">
+                        {{ "SendToGroupTypeIdCC" | translate }}
+                      </th>
+                      <th class="text-center colIsrequestorCC">
+                        {{ "IsSendToRequestorCC" | translate }}
+                      </th>
+                      <th class="text-center colAdditionalCC">
+                        {{ "IsSendToAdditionalCC" | translate }}
+                      </th>
+                      <th class="text-center colSwitch">
+                        {{ "IsActive" | translate }}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (t of e.Matrix; track $index) {
+                      <tr>
+                        <td class="colDesc">{{ t.Description }}</td>
+                        <td class="colGroupType">
+                          @switch (t.Id) {
+                            @case (41) {
+                              <div>
+                                <custom-input-select
+                                  [(ngModel)]="t.SendToGroupTypeId"
+                                  [options]="groupTypeList"
+                                  placeholder="SelectGroup"
+                                  [valueField]="'Id'"
+                                  [textField]="'Description'"
+                                  (change)="t.isEdited = true"
+                                >
+                                </custom-input-select>
+                              </div>
+                            }
+                            @default {
+                              <custom-input-multi-select
+                                [(ngModel)]="t.SendToGroupTypeIds"
+                                [options]="groupTypeList"
+                                placeholder="SelectGroup"
+                                [valueField]="'Id'"
+                                [textField]="'Description'"
+                                (change)="t.isEdited = true"
+                              >
+                              </custom-input-multi-select>
+                            }
+                          }
+                        </td>
+                        <td class="text-center colIsrequestor">
+                          <custom-input-select-button
+                            (change)="t.isEdited = true"
+                            [options]="[
+                              { Id: true, Description: 'Yes' },
+                              { Id: false, Description: 'No' }
+                            ]"
+                            [(ngModel)]="t.IsSendToRequestor"
+                          >
+                          </custom-input-select-button>
+                        </td>
+                        <td class="text-center colAdditional">
+                          <custom-input-select-button
+                            (change)="t.isEdited = true"
+                            [options]="[
+                              { Id: true, Description: 'Yes' },
+                              { Id: false, Description: 'No' }
+                            ]"
+                            [(ngModel)]="t.IsSendToAdditional"
+                          >
+                          </custom-input-select-button>
+                        </td>
+                        <td class="text-center colGroupTypeCC">
+                          <!-- <custom-input-select-button (change)="t.isEdited=true"
+                                             [options]="[{Id: true , Description:'Yes'},{Id: false , Description:'No'}]" 
+                                             [(ngModel)]="t.SendToGroupTypeIdCC">
+                                            </custom-input-select-button> -->
+                          <custom-input-multi-select
+                            [(ngModel)]="t.SendToGroupTypeIdCCs"
+                            [options]="groupTypeList"
+                            placeholder="SelectGroup"
+                            [valueField]="'Id'"
+                            [textField]="'Description'"
+                            (change)="t.isEdited = true"
+                          >
+                          </custom-input-multi-select>
+                        </td>
+                        <td class="text-center colIsrequestorCC">
+                          <custom-input-select-button
+                            (change)="t.isEdited = true"
+                            [options]="[
+                              { Id: true, Description: 'Yes' },
+                              { Id: false, Description: 'No' }
+                            ]"
+                            [(ngModel)]="t.IsSendToRequestorCC"
+                          >
+                          </custom-input-select-button>
+                        </td>
+                        <td class="text-center colAdditionalCC">
+                          <custom-input-select-button
+                            (change)="t.isEdited = true"
+                            [options]="[
+                              { Id: true, Description: 'Yes' },
+                              { Id: false, Description: 'No' }
+                            ]"
+                            [(ngModel)]="t.IsSendToAdditionalCC"
+                          >
+                          </custom-input-select-button>
+                        </td>
+                        <td class="text-center colSwitch">
+                          @if (t.IsActive) {
+                            <p-button
+                              icon="pi pi-check"
+                              [raised]="true"
+                              size="small"
+                              severity="success"
+                              (onClick)="t.IsActive = false; t.isEdited = true"
+                              [pTooltip]="'Click here to inactive' | translate"
+                              tooltipPosition="left"
+                            ></p-button>
+                          } @else {
+                            <p-button
+                              icon="pi pi-times"
+                              [raised]="true"
+                              size="small"
+                              severity="danger"
+                              (onClick)="t.IsActive = true; t.isEdited = true"
+                              [pTooltip]="'Click here to active' | translate"
+                              tooltipPosition="left"
+                            ></p-button>
+                          }
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <p-button
+              type="submit"
+                [raised]="true"
+                [label]="'Submit' | translate"
+                class="m-r-5"
+                (onClick)="onSubmit(emailMatrixList)"
+              ></p-button>
+            </div>
+          </div>
+        </p-accordionTab>
+      }
+    </p-accordion>
+  </ng-template>
+</app-page-container>

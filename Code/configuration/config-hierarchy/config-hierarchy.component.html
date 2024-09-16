@@ -1,0 +1,57 @@
+<app-page-container [heading]="title" icon="pi pi-cog">
+    <ng-template #pageBody>
+        <form [formGroup]="form" (submit)="onSubmit(form)">
+            <div class="row">
+                <div class="col-md-3">
+                    <custom-input-select [label]="'ParentHierarchy'" formControlName="ParentId" [options]="rows"
+                        [placeholder]="'Select Parent Hierarchy'">
+                    </custom-input-select>
+                </div>
+                <div class="col-md-3">
+                    <custom-input-text [label]="'Description'" [required]="true" formControlName="Description"
+                        [placeholder]="'Description'">
+                    </custom-input-text>
+                </div>
+                <language-input #descriptionLanguages remove-host [label]="'Description'" [placeholder]="'Description'"
+                    formControlName="ConfigHierarchyResource">
+                </language-input>
+                <div class="col-md-3">
+                    <custom-input-text [label]="'IconClass'" formControlName="IconClass" [placeholder]="'IconClass'">
+                    </custom-input-text>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <custom-input-switch [label]="'IsActive'" formControlName="IsActive">
+                        </custom-input-switch>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <p-button type="submit" [disabled]="disabled" [raised]="true"
+                            [label]="form.controls['Id'].value > 0 ? 'Update': ('Submit' | translate)"
+                            class="m-r-5"></p-button>
+                        <p-button [raised]="true" [label]="'Clear' | translate" severity="warning"
+                            (onClick)="clearForm()"></p-button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </ng-template>
+
+    <ng-template #pageGrid>
+        <master-app-data-table #adt (export)="fileExport($event)" [tableConfig]="tableConfig"
+            [columns]="tableConfig.columns" [rows]="rows" [total]="total" [offset]="offset"
+            (action)="onClickAction($event)" (search)="onSearch($event)" (page)="onChangePage($event)"
+            (changePageSize)="onChangePageSize($event)" (sort)="onSort($event)">
+        </master-app-data-table>
+    </ng-template>
+</app-page-container>
+
+<ng-template #booleanTemplate let-value="value" let-row="row">
+    {{value==true?'Yes':'No'}}
+</ng-template>

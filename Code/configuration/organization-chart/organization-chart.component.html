@@ -1,0 +1,102 @@
+<app-page-container>
+  <ng-template #pageBody>
+    <div class="row">
+      <hierarchy-level remove-host [(ngModel)]="filter.Hierarchy" [maxLevel]="structureLevelId" [allowClear]="false"
+        (onLevelChange)="GetOrganizationChart()">
+      </hierarchy-level>
+    </div>
+    <div class="row">
+      <div class="col-md-12" id="divContainer">
+        <div class="card bg-primary">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-6 align-self-center">
+                <p class="mb-0 d-inline-block">
+                  <!-- {{ session?.PageContext?.Description || '' | translate }} -->
+                </p>
+              </div>
+              <div class="col-6">
+                @if(organizationNode && organizationNode.length > 0){
+                <p-button [raised]="true" severity="danger" [label]="'Export'| translate" (click)="exportToImage()"
+                  styleClass="pull-right ms-2">
+                </p-button>
+                <p-button [raised]="true" severity="warning" [label]="'Reset'| translate" (click)="zoomReset()"
+                  styleClass="pull-right ms-2">
+                </p-button>
+                <p-button [raised]="true" severity="secondary" [label]="'ZoomIn'| translate" (click)="zoomIn()"
+                  styleClass="pull-right ms-2">
+                </p-button>
+                <p-button [raised]="true" severity="success" [label]="'ZoomOut'| translate" (click)="zoomOut()"
+                  styleClass="pull-right ms-2">
+                </p-button>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-0 bg-white">
+          <div class="table-responsive p-3" [style.zoom]="chartZoom" id="divOrganizationChart">
+            <p-organizationChart [value]="organizationNode">
+              <ng-template let-node pTemplate="default">
+                <div class="card organization-card text-center bg-primary">
+                  <div class="card-header text-white">
+                    <i class="pi pi-map-marker"></i> {{ node.label }}
+                  </div>
+                  <div class="card-body p-0 bg-white">
+                    <div class="accordion">
+                      @for (group of node.data?.Groups; track $index) {
+                      <div class="card m-0">
+                        <div class="card-header">
+                          <button type="button" (click)="group.expanded = !group.expanded" class="btn btn-link">
+                            {{ group.GroupDescription }}
+                            @if(group.GroupMembers.length > 0){
+                            <span class="mx-2">({{ group.GroupMembers.length }})</span>
+                            }
+                            <span class="float-right">
+                              <!-- <i class="fa" [class.fa-angle-down]="group.expanded" [class.fa-angle-right]="!group.expanded"></i> -->
+                              <i class="pi" [class.pi-chevron-circle-down]="group.expanded"
+                                [class.pi-chevron-circle-right]="!group.expanded"></i>
+                            </span>
+                          </button>
+                        </div>
+                        @if(group.expanded) {
+                        <div class="card-body text-left">
+                          <div class="table-responsive p-1" style="overflow: auto;">
+                            <table class="table m-0">
+                              @for (user of group.GroupMembers; track $index) {
+                              <tr>
+                                <td class="p-0">
+                                  <img fallback-src="../../../../assets/images/default-profile.jpg"
+                                    [src]="user.ProfilePicture" alt="profile-user" class="rounded-circle" width="30"
+                                    height="30" />
+                                  <!-- <i class="fa fa-user m-r-3"></i> -->
+                                  {{ user.Name }}
+                                </td>
+                              </tr>
+                              }
+                              @if(!group.GroupMembers || group.GroupMembers.length == 0){
+                              <tr>
+                                <td class="p-0">
+                                  <span class="font-weight-light font-italic text-warning">{{ "NoDataToDisplay" |
+                                    translate }}</span>
+                                </td>
+                              </tr>
+                              }
+                            </table>
+                          </div>
+                        </div>
+                        }
+                      </div>
+                      }
+                    </div>
+
+                  </div>
+                </div>
+              </ng-template>
+            </p-organizationChart>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-page-container>

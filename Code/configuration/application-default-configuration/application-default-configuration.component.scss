@@ -1,0 +1,45 @@
+.disable-form {
+  pointer-events: none;
+}
+
+.disable-form-wrapper {
+  cursor: not-allowed;
+}
+
+.emaildisable-note {
+  font-style: italic;
+  color: rgb(243, 76, 34);
+}
+
+::ng-deep{
+  .configcode{
+    min-width: 15% !important;
+    max-width: 15% !important;
+    width: 15% !important;
+  }
+  .config-description{
+    min-width: 15% !important;
+    max-width: 15% !important;
+    width: 15% !important;
+  }
+  .config-value{
+    min-width: 35% !important;
+    max-width: 35% !important;
+    width: 35% !important;
+  }
+  .config-value-unit{
+    min-width: 18% !important;
+    max-width: 18% !important;
+    width: 18% !important;
+  }
+  .config-isActive{
+    min-width: 7% !important;
+    max-width: 7% !important;
+    width: 7% !important;
+  }
+  .config-action{
+    min-width: 10% !important;
+    max-width: 10% !important;
+    width: 10% !important;
+  }
+}

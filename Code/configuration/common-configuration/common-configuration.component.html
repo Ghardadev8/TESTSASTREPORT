@@ -1,0 +1,9 @@
+<app-page-container [heading]="title" icon="pi pi-cog">
+    <ng-template #pageBody>
+
+    </ng-template>
+    <ng-template #pageGrid>
+        <master-app-data-table [tableConfig]="commonTableConfig" [rows]="rows" (action)="onClickAction($event)">
+        </master-app-data-table>
+    </ng-template>
+</app-page-container>

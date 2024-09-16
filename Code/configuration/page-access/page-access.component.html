@@ -1,0 +1,166 @@
+<app-page-container [heading]="title" icon="pi pi-lock-open">
+    <ng-template #pageBody>
+        <div class="row">
+            <div class="col-md-3">
+                <custom-input-select [label]="'GroupType'" [required]="true" [(ngModel)]="roleId" [options]="roles"
+                    (change)="getPageAccess()" [placeholder]="'GroupType'">
+                </custom-input-select>
+            </div>
+            <!-- <div class="col text-end mt-4">
+                <custom-input-checkbox [label]="'OldPage'" [(ngModel)]="isOldPage">
+                </custom-input-checkbox>
+            </div> -->
+        </div>
+        @if(isOldPage){
+        <div class="row">
+            <label>{{'Page Permissions' | translate}}</label>
+            <p-accordion [multiple]="true">
+                @for (page of (pages | arrayFilter : parentFilter); track $index) {
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-6">
+                            <p-accordionTab [header]="page.Description">
+                                <table class="table-bordered table-striped module-list-table">
+                                    <colgroup>
+                                        <col width="40%">
+                                        <col width="15%">
+                                        <col width="15%">
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th>{{'Page' | translate}}</th>
+                                            <th>
+                                                <div style="display:inline-flex;"><custom-input-checkbox
+                                                        [(ngModel)]="page.readAll" (change)="checkAll(true,page)"
+                                                        [ngModelOptions]="{standalone: true}">
+                                                    </custom-input-checkbox>{{'Read' | translate}}</div>
+                                            </th>
+                                            <th>
+                                                <div style="display:inline-flex;"><custom-input-checkbox
+                                                        [(ngModel)]="page.writeAll" (change)="checkAll(false,page)"
+                                                        [ngModelOptions]="{standalone: true}">
+                                                    </custom-input-checkbox>{{'Write' | translate}}</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- (pages | arrayFilter : roleWisePageFilter:[page]) -->
+                                        @for (r of (pages | ArrayFilterParameter : roleWisePageFilter:[page]); track $index) {
+                                        <tr>
+                                            <td style="text-align: left;">
+                                                {{r.Description}}
+                                            </td>
+                                            <td>
+                                                <custom-input-checkbox [(ngModel)]="r.CanRead"
+                                                    [ngModelOptions]="{standalone: true}">
+                                                </custom-input-checkbox>
+                                            </td>
+                                            <td>
+                                                <custom-input-checkbox [(ngModel)]="r.CanWrite"
+                                                    [ngModelOptions]="{standalone: true}">
+                                                </custom-input-checkbox>
+                                            </td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </p-accordionTab>
+                        </div>
+                    </div>
+                </div>
+                }
+            </p-accordion>
+        </div>
+        }
+        @else {
+        <div class="row">
+            <label>{{'Page Permissions' | translate}}</label>
+            <p-accordion [multiple]="false">
+                <div class="row">
+                    @for (page of (pages | arrayFilter : parentFilter); track $index) {
+
+                    <div class="col-6">
+                        @if(page.NavigateUrl){
+                        <ng-container *ngTemplateOutlet="pageParentTemplate;context:{data: page}">
+                        </ng-container>
+                        }@else {
+                        <p-accordionTab [header]="page.Description">
+                            <table class="table-bordered table-striped module-list-table">
+                                <colgroup>
+                                    <col width="40%">
+                                    <col width="15%">
+                                    <col width="15%">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th>{{'Page' | translate}}</th>
+                                        <th>
+                                            <div style="display:inline-flex;"><custom-input-checkbox
+                                                    [(ngModel)]="page.readAll" (change)="checkAll(true,page)"
+                                                    [ngModelOptions]="{standalone: true}">
+                                                </custom-input-checkbox>{{'Read' | translate}}</div>
+                                        </th>
+                                        <th>
+                                            <div style="display:inline-flex;"><custom-input-checkbox
+                                                    [(ngModel)]="page.writeAll" (change)="checkAll(false,page)"
+                                                    [ngModelOptions]="{standalone: true}">
+                                                </custom-input-checkbox>{{'Write' | translate}}</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (r of getData(page); track $index) {
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            {{r.Description}}
+                                        </td>
+                                        <td>
+                                            <custom-input-checkbox [(ngModel)]="r.CanRead"
+                                                [ngModelOptions]="{standalone: true}" (change)="checkAllChildReadAccess(true,page)">
+                                            </custom-input-checkbox>
+                                        </td>
+                                        <td>
+                                            <custom-input-checkbox [(ngModel)]="r.CanWrite"
+                                                [ngModelOptions]="{standalone: true}" (change)="checkAllChildWriteAccess(true,page)">
+                                            </custom-input-checkbox>
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </p-accordionTab>
+                        }
+                    </div>
+                    }
+                </div>
+            </p-accordion>
+        </div>
+        }
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <p-button [raised]="true" [label]="'Save'| translate" (click)="saveData()"
+                        [disabled]="disabled || !roleId" styleClass="me-2"></p-button>
+                    <p-button [raised]="true" [label]="'Clear'| translate" (click)="reset()"
+                    [disabled]="disabled || !roleId"></p-button>
+                </div>                
+            </div>
+        </div>       
+    </ng-template>
+</app-page-container>
+
+<ng-template #pageParentTemplate let-data="data">
+    <div class="page-tab">
+        <div class="row">
+            <div class="col-6 text-start">
+                <div class="text-decoration-underline">{{data.Description}}</div>
+            </div>
+            <div class="col-6 d-flex justify-content-end gap-4">
+                <custom-input-checkbox label="Read" [(ngModel)]="data.CanRead" [ngModelOptions]="{standalone: true}">
+                </custom-input-checkbox>
+                <custom-input-checkbox label="Write" [(ngModel)]="data.CanWrite" [ngModelOptions]="{standalone: true}">
+                </custom-input-checkbox>
+            </div>
+        </div>
+    </div>
+</ng-template>

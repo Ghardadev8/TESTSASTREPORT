@@ -1,0 +1,81 @@
+<app-page-container [heading]="title" [icon]="icon">
+  <ng-template #pageBody>
+    <form [formGroup]="form" (submit)="onSubmit(form)">
+      <div class="row">
+        <!-- [hideAllLevels]="!(hierarchy.StructureLevel > 0)" -->
+        <!-- hierarchy.StructureLevelId - 1 -->
+        <hierarchy-level #hierarchyLevel remove-host [required]="true" formControlName="Hierarchy"
+          [maxLevel]="maxLevelId" [hiddenLevels]="hiddenLevels">
+        </hierarchy-level>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          <custom-input-text [required]="true" [label]="'_Name' | translate: { p1: (title | translate) }"
+            formControlName="Description" [placeholder]="'_Name' | translate: { p1: (title | translate) }">
+          </custom-input-text>
+        </div>
+        <language-input #descriptionLanguages remove-host [label]="'_Name' | translate: { p1: (title | translate) }"
+          [placeholder]="'_Name' | translate: { p1: (title | translate) }"
+          formControlName="ConfigLevelResource"></language-input>
+        <div class="col-md-3">
+          <custom-input-text [required]="true" label="ShortCode" formControlName="ShortCode" placeholder="ShortCode">
+          </custom-input-text>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-2">
+          <div class="form-group">
+            <custom-input-switch label="IsActive" formControlName="IsActive"></custom-input-switch>
+          </div>
+        </div>
+      </div>
+      @if (!editInProgress) {
+      <!-- <p-accordion [multiple]="true" [activeIndex]="[0]">
+          <p-accordionTab [header]="'MallMap' | translate">
+            <custom-image-cropper
+              [defaultCropPosition]="defaultCoordinates"
+              [value]="form?.getRawValue()?.MapCoordinates"
+              (onCrop)="OnImageCropped($event)"
+              [imageURL]="mallMap?.FileUrl"
+            >
+            </custom-image-cropper>
+          </p-accordionTab>
+        </p-accordion> -->
+      }
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <p-button type="submit" [raised]="true" [label]="
+                form.controls['Id'].value > 0
+                  ? 'Update'
+                  : ('Submit' | translate)
+              " class="m-r-5"></p-button>
+            <p-button [raised]="true" [label]="'Clear' | translate" severity="warning"
+              (onClick)="clearForm()"></p-button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #pageGrid>
+    @if (hierarchy.StructureLevelId > 1) {
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row justify-content-end">
+          <hierarchy-level #hierarchyLevel columnClass="col-md-3" remove-host [(ngModel)]="search.Hierarchy"
+            [showLabels]="false" [maxLevel]="hierarchy.StructureLevelId - 1" [hiddenLevels]="hiddenLevels"
+            (onLevelChange)="setParentFilter($event)">
+          </hierarchy-level>
+        </div>
+      </div>
+    </div>
+    }
+    <master-app-data-table #adt (export)="fileExport($event)" [tableConfig]="tableConfig"
+      [columns]="tableConfig.columns" [rows]="rows" [total]="total" [offset]="offset" (action)="onClickAction($event)"
+      (search)="onSearch($event)" (page)="onChangePage($event)" (changePageSize)="onChangePageSize($event)"
+      (sort)="onSort($event)">
+    </master-app-data-table>
+  </ng-template>
+</app-page-container>

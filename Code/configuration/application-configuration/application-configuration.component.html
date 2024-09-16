@@ -1,0 +1,402 @@
+<app-page-container [heading]="title" icon="pi pi-cog">
+    <ng-template #pageBody>
+        <form [formGroup]="form">
+            <p-accordion>
+
+                <p-accordionTab [header]="'GeneralConfiguration' | translate">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <custom-input-text label="EnvironmentName" formControlName="Environment_Name"
+                                placeholder="EnvironmentName">
+                            </custom-input-text>
+                        </div>
+                        <div class="col-md-3">
+                            <custom-input-text label="GeneralConfigDateFormat" formControlName="Date_Format"
+                                placeholder="GeneralConfigDateFormat">
+                            </custom-input-text>
+                        </div>
+                        <div class="col-md-3">
+                            <custom-input-text label="GeneralConfigDateTimeFormat" formControlName="DateTime_Format"
+                                placeholder="GeneralConfigDateTimeFormat">
+                            </custom-input-text>
+                        </div>
+                        <div class="col-md-3">
+                            <custom-input-text label="TimeFormat" formControlName="Time_Format"
+                                placeholder="TimeFormat">
+                            </custom-input-text>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <custom-input-text label="PageSize" formControlName="Page_Size" placeholder="PageSize">
+                            </custom-input-text>
+                        </div>
+                        <div class="col-md-3">
+                            <custom-input-text label="SiteKey" formControlName="Site_Key" placeholder="SiteKey">
+                            </custom-input-text>
+                        </div>
+                        <div class="col-md-3">
+                            <custom-input-number label="RequestLimitsTimeWindow"
+                                formControlName="Request_Limits_Time_Window" placeholder="RequestLimitsTimeWindow">
+                            </custom-input-number>
+                        </div>
+                        <div class="col-md-3">
+                            <custom-input-number label="RequestLimitsMaxRequests"
+                                formControlName="Request_Limits_Max_Requests" placeholder="RequestLimitsMaxRequests"
+                                type="number">
+                            </custom-input-number>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <custom-input-text label="DefaultLandingPage" formControlName="Default_Landing_Page"
+                                placeholder="DefaultLandingPage">
+                            </custom-input-text>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <custom-input-checkbox label="IsEnvironmentProduction" formControlName="Is_Production">
+                            </custom-input-checkbox>
+                        </div>
+                        <div class="col-md-3">
+                            <custom-input-checkbox label="EnableCaptcha" formControlName="Enable_Captcha">
+                            </custom-input-checkbox>
+                        </div>
+                        <div class="col-md-3">
+                            <custom-input-checkbox label="EnableRequestLimits" formControlName="Enable_Request_Limits">
+                            </custom-input-checkbox>
+                        </div>
+                        <div class="col-md-3">
+                            <custom-input-checkbox label="IsReportOnNewTab" formControlName="Request_Report_New_Tab">
+                            </custom-input-checkbox>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <custom-input-checkbox label="IsFinancialYear" formControlName="Financial_Year">
+                            </custom-input-checkbox>
+                        </div>
+                        <div class="col-md-3">
+                            <custom-input-checkbox label="EnableAdminComment" formControlName="Enable_Admin_Comment">
+                            </custom-input-checkbox>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <p-button [raised]="true" [label]="'Update' | translate"
+                                    (click)="onSubmit(form, enumConfigType.General_Configuration)" styleClass="me-2">
+                                </p-button>
+                            </div>
+                        </div>
+                    </div>
+                </p-accordionTab>
+
+                <p-accordionTab [header]="'EmailConfiguration' | translate">
+                    <div class="row">
+                        <div class="col-md-3" style="margin-bottom: 20px;">
+                            <custom-input-checkbox label="IsEmailEnabled" formControlName="Email_Enabled">
+                            </custom-input-checkbox>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <custom-input-text [required]="true" [label]="'EmailDisplayName'"
+                                formControlName="From_Email_Name" [placeholder]="'EmailDisplayName'">
+                            </custom-input-text>
+                        </div>
+                        <div class="col-md-3">
+                            <custom-input-text [required]="true" [label]="'EmailAddress'"
+                                formControlName="SMTP_Server_Network_Credential_User_Name"
+                                [placeholder]="'EmailAddress'">
+                            </custom-input-text>
+                        </div>
+                        <div class="col-md-3">
+                            <custom-input-text [required]="true" [label]="'AdminEmailAddress'"
+                                formControlName="SMTP_Server_Network_Credential_Admin_Email"
+                                [placeholder]="'AdminEmailAddress'">
+                            </custom-input-text>
+                        </div>
+                        <div class="col-md-3" style="margin-top: 20px;">
+                            <custom-input-checkbox label="IsPasswordRequired"
+                                formControlName="SMTP_Is_Email_Password_Required"
+                                (ngModelChange)="EmailPasswordChange($event)">
+                            </custom-input-checkbox>
+                        </div>
+                        <div class="col-md-3">
+                            <custom-input-text [required]="form.controls['SMTP_Is_Email_Password_Required'].value"
+                                [label]="'EmailPassword'" formControlName="SMTP_Server_Network_Credential_Password"
+                                [placeholder]="'EmailPassword'" type="password">
+                            </custom-input-text>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <custom-input-text [required]="true" [label]="'EmailHost'"
+                                formControlName="SMTP_Server_Host" [placeholder]="'EmailHost'">
+                            </custom-input-text>
+                        </div>
+                        <div class="col-md-3">
+                            <custom-input-text [required]="true" [label]="'EmailServerPort'"
+                                formControlName="SMTP_Server_Port" [placeholder]="'EmailServerPort'" type="number">
+                            </custom-input-text>
+                        </div>
+                        <div class="col-md-3" style="margin-top: 20px;">
+                            <div>
+                                <custom-input-checkbox label="IsEnabledSSL" formControlName="SMTP_Enable_SSL">
+                                </custom-input-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <p-button [raised]="true" [label]="'Update' | translate"
+                                    (click)="onSubmit(form, enumConfigType.Email_Configuration)" styleClass="me-2">
+                                </p-button>
+                            </div>
+                        </div>
+                    </div>
+                </p-accordionTab>
+
+                <p-accordionTab [header]="'ADConfiguration' | translate">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <custom-input-text [required]="true" [label]="'MSALClientId'"
+                                formControlName="MSAL_ClientId" [placeholder]="'MSALClientId'">
+                            </custom-input-text>
+                        </div>
+                        <div class="col-md-3">
+                            <custom-input-text [required]="true" [label]="'MSALTenantId'"
+                                formControlName="MSAL_TenantId" [placeholder]="'MSALTenantId'">
+                            </custom-input-text>
+                        </div>
+                        <div class="col-md-3">
+                            <custom-input-text [required]="true" [label]="'MSALRedirectURI'"
+                                formControlName="MSAL_Redirect_URI" [placeholder]="'MSALRedirectURI'">
+                            </custom-input-text>
+                        </div>
+                        <div class="col-md-3" style="margin-top: 20px;">
+                            <custom-input-checkbox label="EnableADLogin" formControlName="Enable_AD_Login">
+                            </custom-input-checkbox>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <p-button [raised]="true" [label]="'Update' | translate"
+                                    (click)="onSubmit(form, enumConfigType.AD_Configuration)" styleClass="me-2">
+                                </p-button>
+                            </div>
+                        </div>
+                    </div>
+                </p-accordionTab>
+
+                <p-accordionTab [header]="'PasswordConfiguration' | translate">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <!-- <custom-input-text [required]="true" [label]="'DefaultUserPassword'"
+                                [enableViewPassword]="true" formControlName="Default_User_Password"
+                                [placeholder]="'DefaultUserPassword'" type="password">
+                            </custom-input-text> -->
+                            <custom-input-password [required]="true" autoComplete="password" label="DefaultUserPassword"
+                                formControlName="Default_User_Password" placeholder="DefaultUserPassword"
+                                [feedback]="false" [showSuggestions]="false">
+                            </custom-input-password>
+
+                        </div>
+                    </div>
+                    <div class="row emaildisable-note form-group">
+                        <span><strong>{{'Note' | translate}}: </strong> <span
+                                class="emaildisable-note">{{'ThisIsConsiderAsaUserDefaultPasswordWhenEmailIsDisabled' |
+                                translate}}.</span></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <p-button [raised]="true" [label]="'Update' | translate"
+                                    (click)="onSubmit(form, enumConfigType.Password_Configuration)" styleClass="me-2">
+                                </p-button>
+                            </div>
+                        </div>
+                    </div>
+                </p-accordionTab>
+
+                <p-accordionTab [header]="'CompanyMasterConfiguration' | translate">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <custom-input-text [required]="true" [label]="'CompanyName'" formControlName="CMC"
+                                [placeholder]="'CompanyName'">
+                            </custom-input-text>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <p-button [raised]="true" [label]="'Update' | translate"
+                                    (click)="onSubmit(form, enumConfigType.Company_Master_Configuration)"
+                                    styleClass="me-2">
+                                </p-button>
+                            </div>
+                        </div>
+                    </div>
+                </p-accordionTab>
+
+                <p-accordionTab [header]="'UserLoginConfiguration' | translate">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <custom-input-number [required]="true" [label]="'LockoutHour'"
+                                formControlName="Lock_out_Hour" [placeholder]="'LockoutHour'">
+                            </custom-input-number>
+                        </div>
+                        <div class="col-md-3">
+                            <custom-input-number [required]="true" [label]="'NoOfAttemptsAllowed'"
+                                formControlName="No_of_Attempts_Allowed" [placeholder]="'NoOfAttemptsAllowed'"
+                                type="number">
+                            </custom-input-number>
+                        </div>
+                        <div class="col-md-3" style="margin-top: 20px;">
+                            <custom-input-checkbox label="EnableAccountLockout"
+                                formControlName="Enable_Account_Lockout">
+                            </custom-input-checkbox>
+                        </div>
+                        <div class="col-md-3" style="margin-top: 20px;">
+                            <custom-input-checkbox label="AllowConcurrentLogin"
+                                formControlName="Allow_Concurrent_Login">
+                            </custom-input-checkbox>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <custom-input-checkbox label="ForcePasswordReset" formControlName="Force_Password_Reset">
+                            </custom-input-checkbox>
+                        </div>
+                        <div class="col-md-3">
+                            <custom-input-checkbox label="EnablePasswordStrengthPolicy"
+                                formControlName="Enable_Password_Strength_Policy">
+                            </custom-input-checkbox>
+                        </div>
+                        <div class="col-md-3">
+                            <custom-input-checkbox label="AcceptWeakPassword" formControlName="Accept_Weak_Password">
+                            </custom-input-checkbox>
+                        </div>
+                        <div class="col-md-3">
+                            <custom-input-checkbox label="EnableUserEnterPassword"
+                                formControlName="Enable_User_Enter_Password">
+                            </custom-input-checkbox>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <p-button [raised]="true" [label]="'Update' | translate"
+                                    (click)="onSubmit(form, enumConfigType.User_Login_Configuration)" styleClass="me-2">
+                                </p-button>
+                            </div>
+                        </div>
+                    </div>
+                </p-accordionTab>
+
+                <p-accordionTab [header]="'PushNotificationConfiguration' | translate">
+                    <div class="row">
+                        <div class="col-md-3" style="margin-bottom: 20px;">
+                            <custom-input-checkbox label="IsPushNotificationEnabled"
+                                formControlName="PushNotification_Enabled">
+                            </custom-input-checkbox>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3" style="margin-bottom: 20px;">
+                            <custom-input-text [required]="true" [label]="'FcmRequestUrl'"
+                                formControlName="FCM_Request_Url" [placeholder]="'FcmRequestUrl'">
+                            </custom-input-text>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <custom-input-textarea [required]="true" [label]="'FcmJson'" formControlName="FCM_Json"
+                                [placeholder]="'FcmJson'" [lineRows]="15">
+                            </custom-input-textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <p-button [raised]="true" [label]="'Update' | translate" (click)="onSubmit(form, 8)"
+                                    styleClass="me-2">
+                                </p-button>
+                            </div>
+                        </div>
+                    </div>
+                </p-accordionTab>
+
+                <p-accordionTab [header]="'LogoConfiguration' | translate">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <custom-attachment label="ApplicationLogo" display="choosefile"
+                                [(ngModel)]="applicationLogo" [ngModelOptions]="{ standalone: true }"
+                                [fileType]="logoFileExtensions" [showPreview]="true" (ngModelChange)="fileUpload($event, 'application_logo')">
+                            </custom-attachment>
+                            <!-- [imageMaxWidth]="170"      [imageMaxHeight]="40"  Removed height width constraint as per dicussion  -->
+                        </div>
+                        <div class="col-md-3">
+                            <custom-attachment label="ReportLogo" display="choosefile" [(ngModel)]="reportLogo"
+                                [ngModelOptions]="{ standalone: true }" [fileType]="logoFileExtensions" [showPreview]="true"
+                                (ngModelChange)="fileUpload($event, 'report_logo')">
+                            </custom-attachment>
+                            <!--[imageMaxWidth]="1920" [imageMaxHeight]="610" Removed height width constraint as per dicussion  -->
+                        </div>
+                        <div class="col-md-3">
+                            <custom-attachment label="FaviconLogo" display="choosefile" [(ngModel)]="faviconLogo"
+                                [ngModelOptions]="{ standalone: true }" [fileType]="faviconFileExtensions" [showPreview]="true"
+                                (ngModelChange)="fileUpload($event, 'favicon_logo')">
+                            </custom-attachment>
+                            <!--[imageMaxWidth]="1920" [imageMaxHeight]="610" Removed height width constraint as per dicussion  -->
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <p-button [raised]="true" [label]="'Update' | translate" (click)="saveLogo()"
+                                    styleClass="me-2">
+                                </p-button>
+                            </div>
+                        </div>
+                    </div>
+                </p-accordionTab>
+
+            </p-accordion>
+        </form>
+    </ng-template>
+</app-page-container>
+
+<ng-template #popupEmailDisabledConfirmation let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title"> {{'Confirmation' | translate}} </h4>
+        <!-- <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('cross click');"></button> -->
+    </div>
+    <div class="modal-body">
+        <h5>{{'BelowServicesAreDisabledIfYouDisabledEmailService' | translate}}
+            <ul>
+                <li>{{'ForgotPasswordEmail' | translate}}</li>
+                <li>{{'WorkflowRelatedEmail' | translate}}</li>
+                <li>{{'UserPasswordEmail' | translate}}</li>
+            </ul>{{'DoYouWantTo' | translate}}
+        </h5>
+        <div class="row">
+            <div class="col-12">
+                <div class="pull-right">
+                    <p-button [raised]="true" [label]="'ProceedWithChanges' | translate" (click)="modal.close(true);"
+                        styleClass="me-2">
+                    </p-button>
+                    <p-button [raised]="true" [label]="'Cancel' | translate" severity="warning"
+                        (click)="modal.close(false);">
+                    </p-button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</ng-template>

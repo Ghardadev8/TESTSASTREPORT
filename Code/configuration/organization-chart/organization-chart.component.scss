@@ -1,0 +1,10 @@
+::ng-deep{
+  .organization-card {
+    min-width: 300px;
+  }
+  
+  .p-organizationchart .p-organizationchart-node-content{
+    padding: 0;
+    border: none;
+  }
+}
